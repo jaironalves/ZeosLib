@@ -3091,9 +3091,11 @@ begin
   // Check for readonly updates
   // Lookup values are requeried automatically on edit of all fields.
   // Didn't find a way to avoid this...
+  {$IFNDEF ZEOS6COMPATIBILIY}
   if Field.ReadOnly and (Field.FieldKind <> fkLookup)
                     and not (State in [dsSetKey, dsCalcFields, dsFilter, dsBlockRead, dsInternalCalc, dsOpening]) then
     DatabaseErrorFmt(SFieldReadOnly, [Field.DisplayName]);
+  {$ENDIF}
   if not (State in dsWriteModes) then
     DatabaseError(SNotEditing, Self);
 
@@ -5246,6 +5248,7 @@ end;
 
 // NB: FPC has TField.FieldDef property
 procedure TZAbstractRODataset.CheckFieldCompatibility(Field: TField; AFieldDef: TFieldDef);
+{$IFNDEF ZEOS6COMPATIBILIY}
 const
   {EH: hint all commented types are the fields the RowAccessor can't handle -> avoid stack killing moves in Get/SetFieldData()
   this Error trapping is made for User-added fields like calulateds ....}
@@ -5272,7 +5275,9 @@ const
 {$ENDIF FPC}
   );
   CheckTypeSizes = [ftBytes, ftVarBytes, ftBCD, ftReference];
+{$ENDIF}  
 begin
+  {$IFNDEF ZEOS6COMPATIBILIY}
   with Field do
   begin
     if (BaseFieldTypes[DataType] <> BaseFieldTypes[AFieldDef.DataType]) then
@@ -5282,6 +5287,7 @@ begin
         DatabaseErrorFmt(SFieldSizeMismatch, [DisplayName, Size,
           AFieldDef.Size], Self);
   end;
+  {$ENDIF}
 end;
 
 {$IFDEF WITH_IPROVIDERSUPPORT_GUID}

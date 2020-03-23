@@ -82,6 +82,9 @@ type
   TZQuery = class (TZAbstractDataSet)
   published
     property Active;
+    {$IFDEF ZEOS6COMPATIBILIY}
+    property RequestLive;
+    {$ENDIF}
     property ReadOnly default False;
     property SQL;
     property ParamCheck;

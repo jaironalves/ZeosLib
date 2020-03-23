@@ -633,7 +633,11 @@ begin
       FWSQL := GetUnicodeEncodedSQL(Value);
       FASQL := ZUnicodeToRaw(FWSQL, ConSettings^.CTRL_CP);
     end else begin
+      {$IFNDEF ZEOS6COMPATIBILIY}
       FASQL := GetRawEncodedSQL(Value);
+      {$ELSE}
+      FASQL := Value;
+      {$ENDIF}
       {$IFDEF DEBUG}FWSQL := ZRawToUnicode(FASQL, FClientCP);{$ENDIF}
     end;
     {$ENDIF UNICODE}

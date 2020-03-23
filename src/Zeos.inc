@@ -43,6 +43,7 @@
 {.$DEFINE GENERIC_INDEX}
 //common compilation directives
 {$DEFINE ZEOS72UP}
+{$DEFINE ZEOS6COMPATIBILIY}
 
 // Uncomment these defines to disable some DB drivers (reduce binary size)
 {.$DEFINE ZEOS_DISABLE_MYSQL}
